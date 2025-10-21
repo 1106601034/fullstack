@@ -1,33 +1,19 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- `app.js` boots the Express server, wires middleware, and mounts the book routes under `/api/books`.
-- Domain logic lives in `models/` (e.g., `models/Book.js` schema) and HTTP handlers in `routes/api/`.
-- Database wiring is isolated in `config/db.js`; update connection helpers here.
-- The `rules/` directory is mandatory reading for all contributors; align your changes with the backend, frontend, deployment, and general standards documented there.
+The repo splits the MERN stack by concern. `Backend/` hosts the Express API: `app.js` wires middleware, loads Mongo via `config/db.js`, and mounts route modules from `routes/api/`. Schemas stay in `models/` (for example `models/Book.js`), and helper utilities must follow the patterns in `Rules/file-organization.md`. `Frontend/` is a Vite powered React client; components live under `src/` and static assets in `public/`. Keep cross-cutting standards from `Rules/` close by, especially the backend, frontend, and deployment notes.
 
 ## Build, Test, and Development Commands
-- `npm install` — resolve dependencies before your first run or when package.json changes.
-- `npm start` — launch the production-style server with Node on port `3000`.
-- `npm run app` — start the hot-reloading development server via nodemon.
-- `npm test` — currently a placeholder; replace with real tests and ensure the command exits non-zero on failures.
+Run installs per package before first use: `cd Backend && npm install`, `cd Frontend && npm install`. Start the API with `npm start` for a production-like Node process on port 3000, or `npm run app` for nodemon hot reloads. Launch the client with `npm run dev` inside `Frontend/` to use Vite, and `npm run build` to produce optimized assets. `npm test` in `Backend/` currently fails intentionally - replace it with real Jest runs so CI surfaces regressions.
 
 ## Coding Style & Naming Conventions
-- Use 2-space indentation and single quotes for strings to match existing files; reserve backticks for templates.
-- Name model files and classes with PascalCase (`Book.js`, `BookSchema`); route modules stay camelCase (`books.js`).
-- Prefer early returns and keep controllers slim—push shared helpers into `rules/file-organization.md`-compliant utilities when they grow.
-- Run any formatter or linter configured in the `rules/` guidance; do not commit generated or IDE files.
+Use 2 space indentation, single quotes for strings, and template literals only when interpolation is required. Keep model classes and schema files in PascalCase, while route modules remain camelCase (for example `routes/api/books.js`). Prefer early returns in controllers and move shared logic into utilities aligned with the rules directory. Follow the ESLint config under `Frontend/eslint.config.js` and any formatter directives cited in `Rules/frontend`.
 
 ## Testing Guidelines
-- Adopt Jest with Supertest for the Express API; store specs under `tests/api/` using the `*.spec.js` suffix.
-- Mock external services, but hit a real Mongo test database (or use an in-memory server) for persistence flows.
-- Gate pull requests on `npm test`; aim for high coverage on CRUD paths, schema validation, and error branches.
+Adopt Jest with Supertest for API behavior and Testing Library for React components. Place backend specs in `Backend/tests/api/` using the `*.spec.js` suffix, and mirror the frontend under `Frontend/src/__tests__/`. Aim for coverage across CRUD flows, schema validation, and edge cases like network failures. Always run `npm test` before pushing.
 
 ## Commit & Pull Request Guidelines
-- Write concise, present-tense commit subjects (e.g., `Add pagination to book listing`); keep bodies wrapped at ~72 chars.
-- Group related changes per commit and reference issue IDs when available.
-- Pull requests must describe motivation, testing evidence, and any follow-up tasks; include screenshots or sample responses for API-visible changes.
+Write concise, present-tense commit subjects such as `Add pagination to book listing`, and keep bodies wrapped near 72 characters. Reference issue IDs when available and group related changes together. Pull requests should outline motivation, list manual or automated test evidence, and attach screenshots or sample API responses for visible changes.
 
 ## Security & Configuration Tips
-- Never commit live credentials—externalize the Mongo URI into environment variables (e.g., `.env` + `config` package) and document local setup steps.
-- Review `rules/backend/security.md` before altering authentication, CORS, or data-handling logic.
+Keep secrets out of the repo. Load Mongo URIs and API keys from environment variables via the `config` package, and document any new variables in the backend README. Review `Rules/backend/security.md` before modifying authentication, CORS, or data handling logic.
