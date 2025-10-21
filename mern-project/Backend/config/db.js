@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
+
+// mongodb altas config
 // const db =
 //   "mongodb+srv://root:Password@mern-project.hopg3fs.mongodb.net/?retryWrites=true&w=majority&appName=mern-project";
+
+// mongodb compress config
 const db = "mongodb+srv://root:Password@mern-project.hopg3fs.mongodb.net/";
 
 mongoose.set("strictQuery", true, "useNewUrlParser", true);
