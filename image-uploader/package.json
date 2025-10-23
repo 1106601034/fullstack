@@ -1,24 +1,25 @@
 {
-  "name": "mernproject",
+  "name": "image-uploader",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js",
-    "server": "nodemon app.js"
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm run dev --prefix Frontend",
+    "project": "concurrently \"npm run server\" \"npm run client\""
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "body-parser": "^2.2.0",
-    "config": "^3.3.9",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "mongoose": "^8.19.1"
+    "express-fileupload": "^1.5.2",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "nodemon": "^3.1.10"
   }
 }
