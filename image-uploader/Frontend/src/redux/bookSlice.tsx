@@ -1,4 +1,8 @@
-import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 import fakeAPI from "../fakeAPI";
 import type { Book, BookState } from "../interface/interface";
 
@@ -14,21 +18,23 @@ export const fetchBooks = createAsyncThunk("books/fetchBooks", async () => {
 });
 
 const initialState: BookState = {
-  books: []
+  books: [],
 };
 
 const bookSlice = createSlice({
   name: "books",
   initialState,
   reducers: {
-    addBook: (state, action: PayloadAction<Omit<Book, 'id'>>) => {
+    addBook: (state, action: PayloadAction<Omit<Book, "id">>) => {
       state.books.push({ id: Date.now(), ...action.payload });
     },
     deleteBook: (state, action: PayloadAction<{ id: number }>) => {
       state.books = state.books.filter((book) => book.id !== action.payload.id);
     },
     updateBook: (state, action: PayloadAction<Book>) => {
-      const index = state.books.findIndex((book) => book.id === action.payload.id);
+      const index = state.books.findIndex(
+        (book) => book.id === action.payload.id
+      );
       if (index !== -1) {
         state.books[index] = action.payload;
       }
