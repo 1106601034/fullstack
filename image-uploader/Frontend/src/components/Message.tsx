@@ -1,9 +1,12 @@
-import React from "react";
+type MessageProps = {
+  message: string;
+  setMessage: (value: string) => void;
+};
 
-export default function Message({ message, setMessage }) {
+export default function Message({ message, setMessage }: MessageProps) {
   return (
     <div
-      className="alert alert-warning alert-dissmissable fade show"
+      className="alert alert-warning alert-dismissible fade show"
       role="alert"
     >
       {message}
