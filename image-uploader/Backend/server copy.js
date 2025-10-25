@@ -1,38 +1,41 @@
-// uploadService.js
-const fs = require("fs");
-const path = require("path");
-const { v4: uuidv4 } = require("uuid");
+// server.js
+const express = require("express");
+const fileUpload = require("express-fileupload");
+const cors = require("cors");
 const config = require("./config");
+const uploadService = require("./uploadService");
 
-function ensureUploadDir() {
-  if (!fs.existsSync(config.uploadDir)) {
-    fs.mkdirSync(config.uploadDir, { recursive: true });
+const app = express();
+
+uploadService.ensureUploadDir();
+
+app.use(cors());
+app.use(fileUpload());
+app.use("/uploads", express.static(config.uploadDir));
+
+app.post("/upload", async (req, res) => {
+  try {
+    if (!req.files || !req.files.file) {
+      return res.status(400).json({ error: "No file uploaded." });
+    }
+    const file = req.files.file;
+    uploadService.validateFile(file);
+
+    const filename = await uploadService.saveFile(file);
+    const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${filename}`;
+    return res.json({ fileName: filename, filePath: fileUrl });
+  } catch (err) {
+    console.error("Upload error:", err);
+    return res.status(400).json({ error: err.message });
   }
-}
+});
 
-function validateFile(file) {
-  if (file.size > config.maxFileSize) {
-    throw new Error(`File size exceeds ${config.maxFileSize} bytes`);
-  }
-  if (!config.allowedMimeTypes.includes(file.mimetype)) {
-    throw new Error(`Invalid file type: ${file.mimetype}`);
-  }
-}
+// error middleware
+app.use((err, req, res, next) => {
+  console.error("Unexpected server error:", err);
+  res.status(500).json({ error: "Server error." });
+});
 
-function saveFile(file) {
-  const ext = path.extname(file.name);
-  const filename = `${uuidv4()}${ext}`;
-  const dest = path.join(config.uploadDir, filename);
-  return new Promise((resolve, reject) => {
-    file.mv(dest, (err) => {
-      if (err) return reject(err);
-      resolve(filename);
-    });
-  });
-}
-
-module.exports = {
-  ensureUploadDir,
-  validateFile,
-  saveFile,
-};
+app.listen(config.port, () =>
+  console.log(`API available at http://localhost:${config.port}`)
+);
