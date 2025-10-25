@@ -2,8 +2,8 @@
 const express = require("express");
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
-const config = require("./config");
-const uploadService = require("./uploadService");
+const config = require("./config/config");
+const uploadService = require("./src/uploadService");
 
 const app = express();
 
