@@ -1,6 +1,7 @@
 import React from "react";
 
 const Message = ({ message, setMessage }) => {
+{
   return (
     <div className="alert alert-warning alert-dissmissable fade show">
       {message}
