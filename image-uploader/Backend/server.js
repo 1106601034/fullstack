@@ -10,6 +10,10 @@ const port = 8080;
 app.use(cors());
 app.use(fileUpload());
 
+app.use((err, req, res, next) => {
+  res.status(500).send("Server Error");
+});
+
 app.post("/upload", (req, res) => {
   if (!req.files || !req.files.file) {
     return res.status(400).json({ error: "No file uploaded" });
@@ -33,8 +37,8 @@ app.post("/upload", (req, res) => {
   });
 });
 
-app.get("/", (req, res) => {
-  res.send("404 not found");
-});
+// app.get("/", (req, res) => {
+//   res.send("404 not found");
+// });
 
 app.listen(port, () => console.log(`http://localhost:${port}`));
