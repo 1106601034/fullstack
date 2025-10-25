@@ -10,7 +10,6 @@ const ImageUpload = () => {
   const [File, setFile] = useState("");
   const [uploadFile, setUpLpoadedFile] = useState({});
   const onChange = (e) => {
-    console.log("e", e.target.files);
     if (e.target.files.length) {
       setFile(e.target.files[0]);
     }

@@ -1,10 +1,4 @@
-import React, { type FC } from "react";
-
-type ProgressProps = {
-  percentage: number;
-};
-
-const Progress: FC<ProgressProps> = ({ percentage }) => {
+const Progress = ({ percentage }) => {
   return (
     <div className="progress">
       <div
