@@ -6,9 +6,9 @@ import { isEmpty } from "lodash";
 
 const ImageUpload = () => {
   const [message, setMessage] = useState("");
-  const [uploadPercentage, setUploadPercentage] = useState(100);
+  const [uploadPercentage, setUploadPercentage] = useState(0);
   const [file, setFile] = useState("");
-  const [uploadFile, setUpLpoadedFile] = useState({});
+  const [uploadedFile, setUpLpoadedFile] = useState({});
   const onChange = (e) => {
     if (e.target.files.length) {
       setFile(e.target.files[0]);
@@ -43,6 +43,8 @@ const ImageUpload = () => {
         } else {
           setMessage(data.error);
         }
+      } else {
+        setMessage("Unexpected error occured");
       }
     }
   };
@@ -51,7 +53,7 @@ const ImageUpload = () => {
       {message && <Message message={message} setMessage={setMessage} />}
       <form onSubmit={onSubmit}>
         <div className="input-group mb-3">
-          <input type="file" className="form-control" />
+          <input type="file" className="form-control" onChange={onChange} />
         </div>
         <Progress precentage={uploadPercentage} />
         <input
@@ -60,13 +62,13 @@ const ImageUpload = () => {
           className="btn btn-primary btn-block mt-4"
         />
       </form>
-      {!isEmpty(uploadFile) && (
+      {!isEmpty(uploadedFile) && (
         <div className="row mt-5">
           <div className="col-md-6 m-auto">
-            <h3 className="text-center">{uploadFile.fileName}</h3>
+            <h3 className="text-center">{uploadedFile.fileName}</h3>
             <img
-              src={uploadFile.filePath}
-              alt="upload file"
+              src={uploadedFile.filePath}
+              alt="uploaded file"
               style={{ width: "100%" }}
             />
           </div>
