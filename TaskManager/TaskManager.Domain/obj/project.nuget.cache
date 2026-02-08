@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "Q12f7v7hDCON4kZDtQLjZTksLd4dQCqFRX2e6gVhP8sYksHE4PSg78LQ58VjqrcFIOWBFEz7cKWGMplopEZYyA==",
+  "success": true,
+  "projectFilePath": "/home/user/git/fullstack/TaskManager/TaskManager.Domain/TaskManager.Domain.csproj",
+  "expectedPackageFiles": [
+    "/home/user/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.22/microsoft.aspnetcore.app.ref.8.0.22.nupkg.sha512"
+  ],
+  "logs": []
+}
