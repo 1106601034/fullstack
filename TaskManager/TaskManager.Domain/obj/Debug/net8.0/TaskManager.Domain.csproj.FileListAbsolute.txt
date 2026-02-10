@@ -1,0 +1,6 @@
+/home/user/git/fullstack/TaskManager/TaskManager.Domain/obj/Debug/net8.0/TaskManager.Domain.csproj.AssemblyReference.cache
+/home/user/git/fullstack/TaskManager/TaskManager.Domain/obj/Debug/net8.0/TaskManager.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/user/git/fullstack/TaskManager/TaskManager.Domain/obj/Debug/net8.0/TaskManager.Domain.AssemblyInfoInputs.cache
+/home/user/git/fullstack/TaskManager/TaskManager.Domain/obj/Debug/net8.0/TaskManager.Domain.AssemblyInfo.cs
+/home/user/git/fullstack/TaskManager/TaskManager.Domain/obj/Debug/net8.0/TaskManager.Domain.csproj.CoreCompileInputs.cache
+/home/user/git/fullstack/TaskManager/TaskManager.Domain/obj/Debug/net8.0/TaskManager.Domain.sourcelink.json
