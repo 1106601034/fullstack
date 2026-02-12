@@ -1,4 +1,4 @@
-using TaskManager.Domain.common;
+using TaskManager.Domain.Common;
 using TaskManager.Domain.Interface;
 
 namespace TaskManager.Domain.Events;

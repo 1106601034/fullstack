@@ -1,6 +1,6 @@
 using TaskManager.Domain.Interface;
 
-namespace TaskManager.Domain.common;
+namespace TaskManager.Domain.Common;
 
 /// <summary>
 /// Base class for all domain entities.
