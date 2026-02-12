@@ -1,3 +1,5 @@
+using TaskManager.Domain.Exceptions;
+
 namespace TaskManager.Domain.ValueObjects;
 
 /// <summary>

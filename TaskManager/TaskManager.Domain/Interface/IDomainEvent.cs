@@ -1,4 +1,4 @@
-namespace TaskManager.Domain.common;
+namespace TaskManager.Domain.Interface;
 
 /// <summary>
 /// Marker interface for domain events.

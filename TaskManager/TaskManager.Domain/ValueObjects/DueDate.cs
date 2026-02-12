@@ -36,7 +36,7 @@ public sealed class DueDate : IEquatable<DueDate>
     public bool IsOverdue => Value.Date <= DateTime.UtcNow.Date;
     public int DayUntilDue => (Value.Date - DateTime.UtcNow.Date).Days;
 
-    public bool Equals(DateTime? other) => other is not null && Value == other.Value;
+    public bool Equals(DueDate? other) => other is not null && Value == other.Value;
 
     public override bool Equals(object? obj) => Equals(obj as DueDate);
 
