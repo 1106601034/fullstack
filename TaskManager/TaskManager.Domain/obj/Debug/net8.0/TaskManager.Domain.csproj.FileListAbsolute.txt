@@ -4,3 +4,10 @@
 /home/user/git/fullstack/TaskManager/TaskManager.Domain/obj/Debug/net8.0/TaskManager.Domain.AssemblyInfo.cs
 /home/user/git/fullstack/TaskManager/TaskManager.Domain/obj/Debug/net8.0/TaskManager.Domain.csproj.CoreCompileInputs.cache
 /home/user/git/fullstack/TaskManager/TaskManager.Domain/obj/Debug/net8.0/TaskManager.Domain.sourcelink.json
+/home/user/git/fullstack/TaskManager/TaskManager.Domain/bin/Debug/net8.0/TaskManager.Domain.deps.json
+/home/user/git/fullstack/TaskManager/TaskManager.Domain/bin/Debug/net8.0/TaskManager.Domain.dll
+/home/user/git/fullstack/TaskManager/TaskManager.Domain/bin/Debug/net8.0/TaskManager.Domain.pdb
+/home/user/git/fullstack/TaskManager/TaskManager.Domain/obj/Debug/net8.0/TaskManager.Domain.dll
+/home/user/git/fullstack/TaskManager/TaskManager.Domain/obj/Debug/net8.0/refint/TaskManager.Domain.dll
+/home/user/git/fullstack/TaskManager/TaskManager.Domain/obj/Debug/net8.0/TaskManager.Domain.pdb
+/home/user/git/fullstack/TaskManager/TaskManager.Domain/obj/Debug/net8.0/ref/TaskManager.Domain.dll

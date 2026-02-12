@@ -1,3 +1,5 @@
+using TaskManager.Domain.Interface;
+
 namespace TaskManager.Domain.common;
 
 /// <summary>

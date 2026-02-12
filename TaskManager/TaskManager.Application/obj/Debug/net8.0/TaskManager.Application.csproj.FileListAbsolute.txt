@@ -1,0 +1,16 @@
+/home/user/git/fullstack/TaskManager/TaskManager.Application/bin/Debug/net8.0/TaskManager.Application.deps.json
+/home/user/git/fullstack/TaskManager/TaskManager.Application/bin/Debug/net8.0/TaskManager.Application.dll
+/home/user/git/fullstack/TaskManager/TaskManager.Application/bin/Debug/net8.0/TaskManager.Application.pdb
+/home/user/git/fullstack/TaskManager/TaskManager.Application/bin/Debug/net8.0/TaskManager.Domain.dll
+/home/user/git/fullstack/TaskManager/TaskManager.Application/bin/Debug/net8.0/TaskManager.Domain.pdb
+/home/user/git/fullstack/TaskManager/TaskManager.Application/obj/Debug/net8.0/TaskManager.Application.csproj.AssemblyReference.cache
+/home/user/git/fullstack/TaskManager/TaskManager.Application/obj/Debug/net8.0/TaskManager.Application.GeneratedMSBuildEditorConfig.editorconfig
+/home/user/git/fullstack/TaskManager/TaskManager.Application/obj/Debug/net8.0/TaskManager.Application.AssemblyInfoInputs.cache
+/home/user/git/fullstack/TaskManager/TaskManager.Application/obj/Debug/net8.0/TaskManager.Application.AssemblyInfo.cs
+/home/user/git/fullstack/TaskManager/TaskManager.Application/obj/Debug/net8.0/TaskManager.Application.csproj.CoreCompileInputs.cache
+/home/user/git/fullstack/TaskManager/TaskManager.Application/obj/Debug/net8.0/TaskManager.Application.sourcelink.json
+/home/user/git/fullstack/TaskManager/TaskManager.Application/obj/Debug/net8.0/TaskManager.Application.csproj.CopyComplete
+/home/user/git/fullstack/TaskManager/TaskManager.Application/obj/Debug/net8.0/TaskManager.Application.dll
+/home/user/git/fullstack/TaskManager/TaskManager.Application/obj/Debug/net8.0/refint/TaskManager.Application.dll
+/home/user/git/fullstack/TaskManager/TaskManager.Application/obj/Debug/net8.0/TaskManager.Application.pdb
+/home/user/git/fullstack/TaskManager/TaskManager.Application/obj/Debug/net8.0/ref/TaskManager.Application.dll
