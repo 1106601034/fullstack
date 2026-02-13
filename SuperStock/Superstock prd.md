@@ -789,17 +789,17 @@ These requirements address the operational environment (warehouse/store floor):
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  SuperStock                            [User Name ▼] [Logout]│
+│  SuperStock                           [User Name ▼] [Logout]│
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
-│  │   LOW STOCK │  │   EXPIRING  │  │   TODAY'S   │         │
-│  │     12      │  │     8       │  │   SALES     │         │
-│  │   items     │  │   items     │  │   $1,234    │         │
-│  └─────────────┘  └─────────────┘  └─────────────┘         │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
+│  │   LOW STOCK │  │   EXPIRING  │  │   TODAY'S   │          │
+│  │     12      │  │     8       │  │   SALES     │          │
+│  │   items     │  │   items     │  │   $1,234    │          │
+│  └─────────────┘  └─────────────┘  └─────────────┘          │
 │                                                             │
 │  Recent Alerts                                              │
-│  ─────────────────────────────────────────────────         │
+│  ─────────────────────────────────────────────────          │
 │  ⚠ Whole Milk 1L - Only 5 units remaining                  │
 │  ⚠ Yogurt Strawberry - Expires in 2 days (15 units)        │
 │  ⚠ Bread Whole Wheat - Only 3 units remaining              │
@@ -817,11 +817,11 @@ These requirements address the operational environment (warehouse/store floor):
 │  Barcode: [____________________] [Scan]                     │
 │                                                             │
 │  Cart                                                       │
-│  ─────────────────────────────────────────────────         │
-│  │ Whole Milk 1L          x2    $2.99    $5.98   [🗑]│     │
-│  │ Bread Whole Wheat      x1    $3.49    $3.49   [🗑]│     │
-│  │ Eggs Large 12pk        x1    $4.99    $4.99   [🗑]│     │
-│  ─────────────────────────────────────────────────         │
+│  ─────────────────────────────────────────────────────      │
+│  │ Whole Milk 1L          x2    $2.99    $5.98   [🗑] │      │
+│  │ Bread Whole Wheat      x1    $3.49    $3.49   [🗑] │      │
+│  │ Eggs Large 12pk        x1    $4.99    $4.99   [🗑] │      │
+│  ─────────────────────────────────────────────────────      │
 │                                                             │
 │                                    Subtotal:    $14.46      │
 │                                                             │
@@ -925,103 +925,9 @@ For this development project, design for:
 
 -----
 
-## 9. Implementation Plan
+## 9. Testing Strategy
 
-### Phase 1: Foundation (Week 1-2)
-
-**Goal:** Project setup, database, authentication
-
-- [ ] Initialize ASP.NET Core Web API project
-- [ ] Configure Entity Framework Core with PostgreSQL
-- [ ] Create database migrations for all entities
-- [ ] Implement User entity and authentication endpoints
-- [ ] Set up JWT token generation and validation
-- [ ] Add role-based authorization middleware
-- [ ] Initialize React project with TypeScript
-- [ ] Set up routing and authentication context
-- [ ] Create login page and auth flow
-- [ ] Set up Docker Compose for local development
-
-**Deliverable:** User can log in; protected routes work.
-
-### Phase 2: Product Management (Week 3)
-
-**Goal:** Full product CRUD with categories
-
-- [ ] Implement Category CRUD endpoints
-- [ ] Implement Product CRUD endpoints
-- [ ] Add Barcode management (nested in product)
-- [ ] Add product search and filtering
-- [ ] Build Product List page with search
-- [ ] Build Product Detail/Edit page
-- [ ] Build Product Create page
-- [ ] Build Category Manager page
-
-**Deliverable:** User can manage products and categories.
-
-### Phase 3: Inventory Core (Week 4-5)
-
-**Goal:** Batch tracking and FEFO logic
-
-- [ ] Implement Batch entity and endpoints
-- [ ] Implement Goods Receipt endpoint
-- [ ] Implement FEFO stock deduction logic
-- [ ] Implement Inventory Adjustment endpoint
-- [ ] Implement Waste/Shrinkage endpoint
-- [ ] Build Goods Receipt form
-- [ ] Build Waste Entry form
-- [ ] Add batch display to Product Detail page
-- [ ] Build Inventory Transactions list
-
-**Deliverable:** User can receive goods, record waste, view batches.
-
-### Phase 4: POS Simulation (Week 5-6)
-
-**Goal:** Working checkout flow
-
-- [ ] Implement Sales and SaleItems entities
-- [ ] Implement Sale processing endpoint with FEFO
-- [ ] Implement Sale void endpoint
-- [ ] Build POS interface (barcode input, cart, checkout)
-- [ ] Handle insufficient stock errors gracefully
-- [ ] Add sale confirmation display
-
-**Deliverable:** User can process simulated sales.
-
-### Phase 5: Alerts and Reports (Week 6-7)
-
-**Goal:** Operational visibility
-
-- [ ] Implement Low Stock query endpoint
-- [ ] Implement Expiring Items query endpoint
-- [ ] Implement Shrinkage Report endpoint
-- [ ] Build Dashboard with alert counts
-- [ ] Build Low Stock Alert page
-- [ ] Build Expiring Items page
-- [ ] Build Shrinkage Report page
-
-**Deliverable:** User can view alerts and reports.
-
-### Phase 6: Polish (Week 7-8)
-
-**Goal:** Production readiness
-
-- [ ] User management pages (admin)
-- [ ] Comprehensive error handling
-- [ ] Loading states and optimistic updates
-- [ ] Mobile responsiveness pass
-- [ ] Accessibility review (contrast, focus states)
-- [ ] Seed data for demo
-- [ ] README and setup documentation
-- [ ] Final testing and bug fixes
-
-**Deliverable:** Complete, polished application.
-
------
-
-## 10. Testing Strategy
-
-### 10.1 Backend Testing
+### 9.1 Backend Testing
 
 |Type             |Scope                           |Tools                       |
 |-----------------|--------------------------------|----------------------------|
@@ -1035,7 +941,7 @@ For this development project, design for:
 - Insufficient stock handling
 - Role-based access control
 
-### 10.2 Frontend Testing
+### 9.2 Frontend Testing
 
 |Type             |Scope                |Tools                |
 |-----------------|---------------------|---------------------|
@@ -1048,7 +954,7 @@ For this development project, design for:
 - POS checkout flow
 - Goods receipt submission
 
-### 10.3 Manual Testing
+### 9.3 Manual Testing
 
 - Cross-browser testing (Chrome, Firefox, Safari)
 - Mobile responsiveness (iOS Safari, Android Chrome)
@@ -1056,7 +962,7 @@ For this development project, design for:
 
 -----
 
-## 11. Glossary
+## 10. Glossary
 
 |Term         |Definition                                                                          |
 |-------------|------------------------------------------------------------------------------------|
@@ -1073,7 +979,7 @@ For this development project, design for:
 
 -----
 
-## 12. Future Enhancements
+## 11. Future Enhancements
 
 Features to consider for future versions:
 
