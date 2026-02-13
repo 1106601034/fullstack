@@ -1,18 +1,20 @@
 # Product Requirement Document: SuperStock IMS
 
-**Version:** 2.0  
-**Status:** Draft  
-**Date:** February 6, 2026  
+**Version:** 2.2
+**Status:** Draft
+**Date:** February 13, 2026
 **Document Type:** Full-Stack Development Project Specification
 
 -----
 
 ## Version History
 
-|Version|Date       |Author|Changes                                                                                     |
-|-------|-----------|------|--------------------------------------------------------------------------------------------|
-|1.0    |Feb 5, 2026|—     |Initial draft                                                                               |
-|2.0    |Feb 6, 2026|—     |Revised for full-stack development project; added data model, API specs, implementation plan|
+|Version|Date        |Author|Changes                                                                                     |
+|-------|------------|------|--------------------------------------------------------------------------------------------|
+|1.0    |Feb 5, 2026 |—     |Initial draft                                                                               |
+|2.0    |Feb 6, 2026 |—     |Revised for full-stack development project; added data model, API specs, implementation plan|
+|2.1    |Feb 13, 2026|—     |Expanded tech stack: Serilog, TanStack Query, Vite, shadcn/ui, CI/CD, testing tools; removed implementation plan section|
+|2.2    |Feb 13, 2026|—     |Updated architecture to Modular Monolith with Vertical Slices; added detailed project structure and feature organization|
 
 -----
 
@@ -834,7 +836,7 @@ These requirements address the operational environment (warehouse/store floor):
 
 ## 7. Technical Stack
 
-### 7.1 Backend
+### 7.1 Backend - Core
 
 |Component        |Technology           |Version|
 |-----------------|---------------------|-------|
@@ -848,38 +850,202 @@ These requirements address the operational environment (warehouse/store floor):
 |Validation       |FluentValidation     |—      |
 |Mapping          |AutoMapper           |—      |
 
-### 7.2 Frontend
+### 7.2 Backend - Architecture
+
+#### Architecture Decision: Modular Monolith with Vertical Slices
+
+For an IMS where **data consistency is critical** (stock accuracy, FEFO calculations), we use a hybrid approach that balances simplicity with scalability.
+
+|Component            |Technology                    |Purpose                                      |
+|---------------------|------------------------------|---------------------------------------------|
+|Architecture Pattern |Modular Monolith + Vertical Slices|High cohesion, easy extraction to microservices|
+|Mediator             |MediatR                       |Decouple request handlers, CQRS-lite         |
+|Module Communication |In-process method calls       |Modules interact via public APIs only        |
+|Dependency Rule      |Clean Architecture principles |Business logic independent of infrastructure |
+
+#### Why This Approach?
+
+| Architecture | Pros | Cons |
+|--------------|------|------|
+| **Clean Architecture (Strict)** | Excellent testability; decoupled layers | Verbose; simple CRUD requires too much boilerplate |
+| **Vertical Slices** | High cohesion; all code for a feature in one place | Can become spaghetti without layering rules |
+| **Microservices** | Independent scaling | Distributed transactions complexity; kills ACID for inventory |
+| **Modular Monolith + Slices** ✅ | Best of both; single deployment; easy future extraction | Requires discipline to maintain boundaries |
+
+#### Project Structure (Modular Monolith with Vertical Slices)
+
+```
+SuperStock.API/                        → Host, DI configuration, middleware
+│
+├── Modules/
+│   ├── Catalog/                       → Product & Category management
+│   │   ├── Features/
+│   │   │   ├── CreateProduct/
+│   │   │   │   ├── CreateProductEndpoint.cs
+│   │   │   │   ├── CreateProductCommand.cs
+│   │   │   │   └── CreateProductHandler.cs
+│   │   │   ├── GetProduct/
+│   │   │   ├── UpdateProduct/
+│   │   │   └── DeleteProduct/
+│   │   ├── Domain/                    → Product, Category, Barcode entities
+│   │   ├── Data/                      → EF configurations, repositories
+│   │   └── CatalogModule.cs           → Module registration
+│   │
+│   ├── Inventory/                     → Stock, Batches, FEFO logic
+│   │   ├── Features/
+│   │   │   ├── ReceiveGoods/
+│   │   │   ├── AdjustStock/
+│   │   │   ├── RecordWaste/
+│   │   │   ├── GetExpiringItems/
+│   │   │   └── GetLowStock/
+│   │   ├── Domain/                    → Batch, InventoryTransaction entities
+│   │   ├── Data/
+│   │   └── InventoryModule.cs
+│   │
+│   ├── Sales/                         → POS, transactions
+│   │   ├── Features/
+│   │   │   ├── ProcessSale/
+│   │   │   ├── VoidSale/
+│   │   │   └── GetSale/
+│   │   ├── Domain/                    → Sale, SaleItem entities
+│   │   ├── Data/
+│   │   └── SalesModule.cs
+│   │
+│   ├── Users/                         → Authentication, authorization
+│   │   ├── Features/
+│   │   │   ├── Login/
+│   │   │   ├── Register/
+│   │   │   └── ChangePassword/
+│   │   ├── Domain/                    → User entity
+│   │   ├── Data/
+│   │   └── UsersModule.cs
+│   │
+│   └── Reports/                       → Reporting & analytics
+│       ├── Features/
+│       │   ├── ShrinkageReport/
+│       │   ├── InventoryValueReport/
+│       │   └── ExpiringItemsReport/
+│       └── ReportsModule.cs
+│
+├── Shared/                            → Cross-cutting concerns
+│   ├── Domain/                        → Base entities, value objects
+│   ├── Infrastructure/                → Common DB, caching, logging
+│   ├── Behaviors/                     → MediatR pipeline (validation, logging)
+│   └── Exceptions/                    → Custom exception types
+│
+└── Program.cs                         → Application entry point
+```
+
+#### Vertical Slice Example: AdjustStock Feature
+
+```
+Modules/Inventory/Features/AdjustStock/
+├── AdjustStockEndpoint.cs      → POST /api/inventory/adjust
+├── AdjustStockCommand.cs       → Request DTO with validation
+├── AdjustStockHandler.cs       → Business logic (FEFO, transactions)
+├── AdjustStockValidator.cs     → FluentValidation rules
+└── AdjustStockResponse.cs      → Response DTO
+```
+
+**Key Principles:**
+1. **Module Isolation**: Modules only communicate via public interfaces, never access each other's database tables directly
+2. **Feature Cohesion**: All code for a use case lives together—endpoint, command, handler, validation
+3. **Dependency Rule**: Handlers don't depend on endpoints; repositories implement interfaces defined by business logic
+4. **Future-Proof**: Any module can be extracted to a microservice if scaling demands it
+
+### 7.3 Backend - Logging & Observability
+
+|Component        |Technology                    |Purpose                        |
+|-----------------|------------------------------|-------------------------------|
+|Structured Logging|Serilog                      |Rich, queryable logs           |
+|Log Sinks        |Console + File + Seq (optional)|Log output destinations        |
+|Health Checks    |AspNetCore.Diagnostics.HealthChecks|Monitor DB, dependencies      |
+|Correlation IDs  |Serilog.Enrichers             |Trace requests across services |
+
+### 7.4 Backend - Resilience & Performance
+
+|Component          |Technology                     |Purpose                        |
+|-------------------|-------------------------------|-------------------------------|
+|Retry Policies     |Polly                          |Handle transient failures      |
+|Circuit Breaker    |Polly                          |Fail fast on repeated errors   |
+|Caching            |IMemoryCache                   |Reduce DB load for hot data    |
+|Rate Limiting      |AspNetCore.RateLimiting        |API protection                 |
+|Response Compression|Built-in middleware           |Reduce payload sizes           |
+
+### 7.5 Backend - Background Processing
+
+|Component        |Technology        |Purpose                              |
+|-----------------|------------------|-------------------------------------|
+|Scheduled Jobs   |Hangfire          |Expiry alerts, cleanup, reports      |
+|Background Tasks |IHostedService    |Long-running async operations        |
+|Job Dashboard    |Hangfire.Dashboard|Monitor and manage jobs              |
+
+### 7.6 Frontend - Core
 
 |Component       |Technology                |Version|
 |----------------|--------------------------|-------|
 |Framework       |React                     |18     |
 |Language        |TypeScript                |5.x    |
+|Build Tool      |Vite                      |5.x    |
 |Routing         |React Router              |6      |
-|State Management|React Context + useReducer|—      |
-|HTTP Client     |Axios                     |—      |
 |Styling         |Tailwind CSS              |3.x    |
-|Forms           |React Hook Form           |—      |
-|Tables          |TanStack Table            |—      |
 |Icons           |Lucide React              |—      |
 
-### 7.3 Infrastructure
+### 7.7 Frontend - State & Data
 
-|Component         |Technology                         |
-|------------------|-----------------------------------|
-|Containerization  |Docker + Docker Compose            |
-|Database Container|postgres:16-alpine                 |
-|API Container     |mcr.microsoft.com/dotnet/aspnet:8.0|
-|Local Development |Docker Compose with hot reload     |
+|Component        |Technology          |Purpose                              |
+|-----------------|--------------------|-------------------------------------|
+|Server State     |TanStack Query      |API caching, refetching, mutations   |
+|Client State     |React Context + useReducer|Local UI state (auth, theme)   |
+|Forms            |React Hook Form     |Form state and validation            |
+|Schema Validation|Zod                 |Runtime validation + TypeScript types|
+|Tables           |TanStack Table      |Headless table logic                 |
 
-### 7.4 Development Tools
+### 7.8 Frontend - UI Components
 
-|Purpose        |Tool                                  |
-|---------------|--------------------------------------|
-|Backend IDE    |Visual Studio / VS Code + C# extension|
-|Frontend IDE   |VS Code                               |
-|API Testing    |Postman or Thunder Client             |
-|Database GUI   |pgAdmin or DBeaver                    |
-|Version Control|Git                                   |
+|Component        |Technology          |Purpose                              |
+|-----------------|--------------------|-------------------------------------|
+|Component Library|shadcn/ui           |Accessible, customizable components  |
+|Primitives       |Radix UI            |Unstyled accessible primitives       |
+|Notifications    |Sonner              |Toast notifications                  |
+|Class Utilities  |clsx + tailwind-merge|Conditional class management        |
+|Date Handling    |date-fns            |Lightweight date formatting          |
+
+### 7.9 Infrastructure
+
+|Component         |Technology                         |Purpose                    |
+|------------------|-----------------------------------|---------------------------|
+|Containerization  |Docker + Docker Compose            |Consistent environments    |
+|Database Container|postgres:16-alpine                 |Lightweight PostgreSQL     |
+|API Container     |mcr.microsoft.com/dotnet/aspnet:8.0|Production .NET runtime    |
+|Reverse Proxy     |nginx                              |SSL termination, routing   |
+|Local Development |Docker Compose with hot reload     |Fast development iteration |
+
+### 7.10 CI/CD & Quality
+
+|Component        |Technology          |Purpose                              |
+|-----------------|--------------------|-------------------------------------|
+|CI/CD Pipeline   |GitHub Actions      |Automated build, test, deploy        |
+|Code Quality     |StyleCop.Analyzers  |C# code style enforcement            |
+|Linting (Frontend)|ESLint + Prettier  |JS/TS code quality                   |
+|Unit Testing (BE)|xUnit + Moq         |Backend unit tests                   |
+|Unit Testing (FE)|Vitest              |Fast frontend unit tests             |
+|E2E Testing      |Playwright          |End-to-end user flow tests           |
+|Test Data        |Bogus               |Generate realistic fake data         |
+|DB Testing       |Testcontainers      |Real PostgreSQL in integration tests |
+|Assertions       |FluentAssertions    |Readable test assertions             |
+
+### 7.11 Development Tools
+
+|Purpose          |Tool                                  |
+|-----------------|--------------------------------------|
+|Backend IDE      |Visual Studio / VS Code + C# extension|
+|Frontend IDE     |VS Code                               |
+|API Testing      |Postman or Thunder Client             |
+|Database GUI     |pgAdmin or DBeaver                    |
+|Version Control  |Git                                   |
+|Editor Config    |.editorconfig                         |
+|Git Hooks        |Husky (frontend)                      |
 
 -----
 
