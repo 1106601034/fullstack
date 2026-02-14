@@ -19,7 +19,6 @@ This documentation is split into logical sections for easier navigation and main
 | [07 - Non-Functional Requirements](./07-non-functional.md) | Performance, scalability, security |
 | [08 - Testing Strategy](./08-testing.md) | Unit, integration, E2E testing approach |
 | [09 - Deployment](./09-deployment.md) | Docker, CI/CD, cloud deployment guides |
-| [10 - Operations & Maintenance](./10-operations.md) | Monitoring, backups, troubleshooting |
 | [11 - Appendix](./11-appendix.md) | Glossary, future enhancements |
 
 ## Version History
